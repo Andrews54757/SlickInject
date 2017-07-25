@@ -11,13 +11,13 @@ class MySQLi implements SQLInterface{
   function __construct()
   {
     if(count(func_get_args()) === 4) 
-    { return call_user_func_args(array($this, "connect"), func_get_args()); }
+    { return call_user_func_array(array($this, "connect"), func_get_args()); }
   }
   
   public function connect($dbhost, $dbuser, $dbpass, $dbname)
   {
     if(isset(self::$con)) return;
-    self::$con = call_user_func_args("mysqli_connect", func_get_args());
+    self::$con = call_user_func_array("mysqli_connect", func_get_args());
     $this->defaultDB = $dbname;
   }
   
@@ -53,7 +53,7 @@ class MySQLi implements SQLInterface{
       $prep = self::$con->stmt_init();
       if($prep->prepare($query)) : 
         if(isset($bind_args) && $bind_args != NULL) :
-          call_user_func_args(array($prep, "bind_param"), $bind_args); endif;
+          call_user_func_array(array($prep, "bind_param"), $bind_args); endif;
         return $prep; endif;
     }catch(\Exception $ex) 
     { return false; }
