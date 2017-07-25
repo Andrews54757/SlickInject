@@ -94,7 +94,7 @@ class SQLObject
     function __construct()
     {
         $args = func_get_args();
-        if (count($args) === 4) return call_user_func_args(array($this, "connect"), $args);
+        if (count($args) === 4) return call_user_func_array(array($this, "connect"), $args);
     }
     
     
@@ -118,7 +118,7 @@ class SQLObject
     {
         if ($this->isConnected()) return;
         $this->d_db_name = $db_name;
-        $include "\\SlickInject\\SQLObject\\Adapter\\".ADAPTER;
+        $include = "\\SlickInject\\SQLObject\\Adapter\\".ADAPTER;
         self::$adapter = new $include($dbhost, $dbuser, $dbpass, $dbname);
     }
     
