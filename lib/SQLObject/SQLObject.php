@@ -6,6 +6,8 @@
 \| @Source: https://github.com/LegitSoulja/SlickInject
 */
 
+define("ADAPTER", "MySQLi");
+
 namespace SlickInject;
 
 class SQLResponce
@@ -81,7 +83,7 @@ class SQLResponce
 
 class SQLObject
 {
-    private static $con;
+    private static $adapter;
     private $d_db_name; // default database name
     private $isInDefault = true;
     
@@ -92,8 +94,7 @@ class SQLObject
     function __construct()
     {
         $args = func_get_args();
-        if (count($args) === 4)
-            return $this->connect($args[0], $args[1], $args[2], $args[3]);
+        if (count($args) === 4) return call_user_func_args(array($this, "connect"), $args);
     }
     
     
@@ -102,7 +103,7 @@ class SQLObject
      * @return void
      */
     public function close()
-    { @\mysqli_close(self::$con); }
+    { self::$adapter->close(); }
     
     
     /**
@@ -113,11 +114,12 @@ class SQLObject
      * @param string $db_name          Database name
      * @return void
      */
-    public function connect($db_host, $db_user, $db_pass, $db_name)
+    public function connect($dbhost, $dbuser, $dbpass, $dbname)
     {
         if ($this->isConnected()) return;
         $this->d_db_name = $db_name;
-        self::$con = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
+        $include "\\SlickInject\\SQLObject\\Adapter\\".ADAPTER;
+        self::$adapter = new $include($dbhost, $dbuser, $dbpass, $dbname);
     }
     
     /**
@@ -125,11 +127,11 @@ class SQLObject
      * @return bool
      */
     private function isConnected()
-    { return (isset(self::$con) && $this->ping()) ? true : false; }
+    { return true; }
     
     public function select_db($name){
         $this->isInDefault = false;
-        return mysqli_select_db(self::$con, $name);
+        self::$adapter->selectDB($name);
     }
     
     /**
@@ -137,33 +139,19 @@ class SQLObject
      * @return int
      */
     public function getConnectionError()
-    { return @\mysqli_connect_error(); }
+    { return self::$adapter->getErrorCode(); }
     
     /**
      * Get last error from a failed prepare, and or execute.
      * @return string
      */
     public function getLastError()
-    { return @\mysqli_error(self::$con); }
-    
-    /** Deprecated [Useless]
-     * Escape string using mysqli
-     * @return string
-     */
-    private function escapeString(&$string)
-    { return self::$con->real_escape_string($string); }
-    
-    /**
-     * Check if connection still live
-     * @return bool
-     */
-    public function ping()
-    { return (@self::$con->ping()) ? true : false; }
+    { return self::$adapter->getError(); }
     
     private function set_default_db()
     { 
         $this->isInDefault = true;
-        return mysqli_select_db(self::$con, $this->d_db_name); 
+        return self::$adapter->setDefaultDB();
     }
     
     /**
@@ -176,10 +164,8 @@ class SQLObject
     public function query($sql, $bind, $rr = false)
     {
         try {
-            $prep = self::$con->stmt_init();
-            if ($prep->prepare($sql)) {
-                if (isset($bind) && $bind != NULL) call_user_func_array(array($prep, "bind_param" ), $bind);
-                if ($prep->execute()) {
+            if($prep = self::$adapter->query($query, $bind)){
+                if($prep->execute()){
                     $result = new SQLResponce($prep);
                     if(!$this->isInDefault) $this->set_default_db(); // reset default database
                     if ($rr) return ($result->hasRows()) ? $result->getData() : array();
