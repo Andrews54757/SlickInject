@@ -1,6 +1,6 @@
 <?php
 
-namespace \SlickInject\SQLObject\Adapter;
+namespace SlickInject\SQLObject\Adapter;
 
 use \SlickInject\SQLObject\SQLInterface as SQLInterface;
 
