@@ -14,7 +14,7 @@ $si = new SlickInject("localhost", "username", "password", "database_name");
 // $si->connect() is usable aswell, instead of passing the args via the constructor
 
 // Get rows from database as an array
-$data = $_slickinject->SELECT([], "table", array("id"=>1)); // @Array : Returns array
+$data = $si->SELECT([], "table", array("id"=>1)); // @Array : Returns array
 print_r($data); // print data
 
 // INSERT :: INSERT INTO `table` (`id`,`username`) VALUES (5, 'bob')
