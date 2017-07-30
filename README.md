@@ -2,17 +2,21 @@
 
 ###### ::v2
 
-#### Supports
+#### Supports PHP (v5.6 - v7.1)
 - [x] MySQLi (100% fully supported)
 > Extensions needed
-- - nd_mysqli
-- - mysqlnd
-- [ ] PDO (Adapters Needed)
-- [ ] MySQL (Adapter Needed)
+- - mysqlnd/nd_mysqli
+
+> ###### [![g](https://img.shields.io/badge/build-passing-brightgreen.svg)](#) [![GitHub issues](https://img.shields.io/github/issues/LegitSoulja/SlickInject.svg)](https://github.com/LegitSoulja/SlickInject/issues) [![GitHub forks](https://img.shields.io/github/forks/LegitSoulja/SlickInject.svg)](https://github.com/LegitSoulja/SlickInject/network) [![GitHub stars](https://img.shields.io/github/stars/LegitSoulja/SlickInject.svg)](https://github.com/LegitSoulja/SlickInject/stargazers)
 
 SlickInject is a PHP library in which allows you to write efficent code, and be safe and secure while doing so. Using this library, makes ease of writing code for your database easier, faster, and no need of extra work/worries of having your database hacked upon an injection, or some random errors. SlickInject does this all for you, very simple.
 
 Using SlickInject, just remember how your SQL is wrote. You'll slowly start to understand the concept behind this, and hopefully you may even have a way to make this even better.
+
+#### Installation
+I have prepared/compiled SlickInject into 1 file if you're interested. It's inside the build folder, or [Download/Generate a new build](http://legitsoulja.info/SlickInject.php). However, Load all the files in lib folder. Composer should load, or manually load the 3 files. test.php also provides a library loader I wrote.
+
+SlickInject is still being debugged, and constantly updated. This documentation is not 100% well complete and documented. 
 
 
 #### Connect to database.

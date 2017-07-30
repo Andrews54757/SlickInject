@@ -8,6 +8,7 @@
 
 namespace SlickInject;
 
+#buildbelow
 class SQLResponce
 {
     
@@ -117,7 +118,7 @@ class SQLObject
     {
         if ($this->isConnected()) return;
         $this->d_db_name = $db_name;
-        self::$con = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
+        self::$con = new \mysqli($db_host, $db_user, $db_pass, $db_name);
     }
     
     /**
@@ -175,9 +176,9 @@ class SQLObject
      */
     public function query($sql, $bind, $rr = false)
     {
+        if(!$this->isConnected()) throw new \Exception("Can't do it partner. Your database connection is not open.");
         try {
-            $prep = self::$con->stmt_init();
-            if ($prep->prepare($sql)) {
+            if ($prep = self::$con->prepare($sql)) {
                 if (isset($bind) && $bind != NULL) {
                     $out = array($bind[0]);
                     
@@ -205,3 +206,4 @@ class SQLObject
         }
     }
 }
+#endbuild

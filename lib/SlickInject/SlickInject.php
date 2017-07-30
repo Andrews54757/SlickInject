@@ -6,11 +6,15 @@
 \| @Source: https://github.com/LegitSoulja/SlickInject
 */
 
+// do not ignore this error. 
+if (!extension_loaded('mysqlnd')) throw new Error("Failed to load nd_mysqli extension.");
+
 use SlickInject\Parser as Parser;
 use SlickInject\SQLObject as SQLObject;
 
 define("SI_VERSION", 102); // 1.0.2
 
+#buildbelow
 class SlickInject
 {
     
@@ -57,8 +61,22 @@ class SlickInject
     }
     
     
+  
+    /*
+    * Output logged data, w/ an option to close the database behind for even quicker clean code
+    * @param bool $state      State of message, used for some type of error reporting to alert rather or not the output was good.
+    * @param string\array     The message in which you are sending.
+    * @param bool             False by default, True to close the database before executing
+    * @return extermination
+    */
+  
+    private function output($state, $message = "", $close = false){
+      if($close) $this->close();
+      die(json_encode(array("state"=>$state, "message"=>$message)));
+    }
+    
     /**
-     *Close database connection
+     * Close database connection
      * @return void
      */
     public function close()
@@ -126,8 +144,9 @@ class SlickInject
      */
     public function DELETE($table, $where = NULL)
     {
-        if (!$this->isConnected() || !isset($table) || !isset($object)) return;
+        if (!$this->isConnected() || !isset($table) || !isset($where)) return;
         $delete = Parser::DELETE($table, $where);
         return self::$SQLObject->query($delete[0], (isset($delete[1])) ? $delete[1] : NULL);
     }
 }
+#endbuild

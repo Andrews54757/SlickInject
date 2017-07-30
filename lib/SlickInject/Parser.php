@@ -13,6 +13,7 @@ namespace SlickInject;
  * This class should not be extended. They are static functions, but grouped in an organized maner,
  * Most of this doc is self explanatory if you look @ SlickInject.php
  */
+#buildbelow
 class Parser
 {
     
@@ -176,3 +177,4 @@ class Parser
         return array( $sql, $where[1] );
     }
 }
+#endbuild
