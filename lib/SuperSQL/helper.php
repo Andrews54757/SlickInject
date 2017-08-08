@@ -1,4 +1,5 @@
 <?php
+namespace SlickInject;
 /*
  Author: Andrews54757
  License: MIT (https://github.com/ThreeLetters/SuperSQL/blob/master/LICENSE)
